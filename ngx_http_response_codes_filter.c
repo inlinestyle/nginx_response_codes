@@ -17,7 +17,17 @@ static void * ngx_http_response_codes_create_main_conf(ngx_conf_t*);
 static ngx_http_output_header_filter_pt ngx_http_next_header_filter;
 
 
-static ngx_command_t ngx_http_response_codes_filter_module_commands[] = {};
+static ngx_command_t ngx_http_response_codes_filter_module_commands[] = {
+  {
+    ngx_string("response_codes"),
+    NGX_HTTP_MAIN_CONF|NGX_CONF_TAKE1|NGX_CONF_FLAG,
+    ngx_conf_set_flag_slot,
+    NGX_HTTP_MAIN_CONF_OFFSET,
+    offsetof(ngx_http_response_codes_conf_t, enable),
+    NULL
+  },
+  ngx_null_command
+};
 
 
 static ngx_http_module_t ngx_http_response_codes_filter_module_ctx = {
@@ -91,14 +101,11 @@ ngx_http_response_codes_header_filter(ngx_http_request_t *r)
   ngx_http_response_codes_conf_t *conf;
   ngx_uint_t status;
 
-
   conf = ngx_http_get_module_main_conf(r, ngx_http_response_codes_filter_module);
 
   if (conf->enable == 1) {
-      status = r->headers_out.status;
-
-      ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "--- status code is ...  %d --- ", status);
-
+    status = r->headers_out.status;
+    ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "--- status code is ...  %d --- ", status);
   }
   return ngx_http_next_header_filter(r);
 }
