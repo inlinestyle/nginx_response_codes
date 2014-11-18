@@ -9,9 +9,9 @@ Metrics on the response codes from your nginx server!
 
 ####Build (may need root access YMMV):
 ```bash
-$ ./configure --add-module=path/to/repo/nginx_response_codes
-$ make
-$ make install
+./configure --add-module=path/to/repo/nginx_response_codes
+make
+make install
 ```
 
 ####Basic usage (in an nginx config file):
