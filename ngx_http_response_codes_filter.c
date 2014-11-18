@@ -56,3 +56,30 @@ ngx_http_response_codes_filter_init(ngx_conf_t *cf)
 
     return NGX_OK;
 }
+
+
+static void *
+ngx_http_response_codes_create_main_conf(ngx_conf_t *cf)
+{
+    ngx_http_response_codes_conf_t *conf;
+
+    conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_response_codes_conf_t));
+    if (conf == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    conf->enable = NGX_CONF_UNSET;
+
+    return conf;
+}
+
+
+static char *
+ngx_http_response_codes_init_main_conf(ngx_conf_t *cf, void *conf)
+{
+   ngx_http_response_codes_conf_t *config = conf;
+
+   ngx_conf_init_value(config->enable, 0);
+
+   return NGX_CONF_OK;
+}
