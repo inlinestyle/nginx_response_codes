@@ -88,7 +88,7 @@ ngx_http_response_codes_init_main_conf(ngx_conf_t *cf, void *conf)
 static ngx_int_t
 ngx_http_response_codes_header_filter(ngx_http_request_t *r)
 {
-  ngx_http_request_codes_conf_t *conf;
+  ngx_http_response_codes_conf_t *conf;
   ngx_uint_t status;
 
 
