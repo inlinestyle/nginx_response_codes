@@ -4,7 +4,7 @@
 
 
 typedef struct {
-    ngx_flag_t enable;
+  ngx_flag_t enable;
 } ngx_http_response_codes_conf_t;
 
 
@@ -51,35 +51,54 @@ ngx_module_t ngx_http_response_codes_filter_module = {
 static ngx_int_t
 ngx_http_response_codes_filter_init(ngx_conf_t *cf)
 {
-    ngx_http_next_header_filter = ngx_http_top_header_filter;
-    ngx_http_top_header_filter = ngx_http_response_codes_header_filter;
+  ngx_http_next_header_filter = ngx_http_top_header_filter;
+  ngx_http_top_header_filter = ngx_http_response_codes_header_filter;
 
-    return NGX_OK;
+  return NGX_OK;
 }
 
 
 static void *
 ngx_http_response_codes_create_main_conf(ngx_conf_t *cf)
 {
-    ngx_http_response_codes_conf_t *conf;
+  ngx_http_response_codes_conf_t *conf;
 
-    conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_response_codes_conf_t));
-    if (conf == NULL) {
-        return NGX_CONF_ERROR;
-    }
+  conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_response_codes_conf_t));
+  if (conf == NULL) {
+    return NGX_CONF_ERROR;
+  }
 
-    conf->enable = NGX_CONF_UNSET;
+  conf->enable = NGX_CONF_UNSET;
 
-    return conf;
+  return conf;
 }
 
 
 static char *
 ngx_http_response_codes_init_main_conf(ngx_conf_t *cf, void *conf)
 {
-   ngx_http_response_codes_conf_t *config = conf;
+  ngx_http_response_codes_conf_t *config = conf;
 
-   ngx_conf_init_value(config->enable, 0);
+  ngx_conf_init_value(config->enable, 0);
 
-   return NGX_CONF_OK;
+  return NGX_CONF_OK;
+}
+
+
+static ngx_int_t
+ngx_http_response_codes_header_filter(ngx_http_request_t *r)
+{
+  ngx_http_request_codes_conf_t *conf;
+  ngx_uint_t status;
+
+
+  conf = ngx_http_get_module_main_conf(r, ngx_http_response_codes_filter_module);
+
+  if (conf->enable == 1) {
+      status = r->headers_out.status;
+
+      ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "--- status code is ...  %d --- ", status);
+
+  }
+  return ngx_http_next_header_filter(r);
 }
