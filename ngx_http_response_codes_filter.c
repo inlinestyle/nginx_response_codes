@@ -17,10 +17,10 @@ static void * ngx_http_response_codes_create_main_conf(ngx_conf_t*);
 static ngx_http_output_header_filter_pt ngx_http_next_header_filter;
 
 
-static ngx_command_t ngx_http_response_codes_filter_commands[] = {};
+static ngx_command_t ngx_http_response_codes_filter_module_commands[] = {};
 
 
-static ngx_http_module_t ngx_http_log_request_speed_filter_ctx = {
+static ngx_http_module_t ngx_http_response_codes_filter_module_ctx = {
   NULL,                                              /* preconfiguration */
   ngx_http_response_codes_filter_init,               /* postconfiguration */
   ngx_http_response_codes_create_main_conf,          /* create main configuration */
