@@ -8,6 +8,7 @@ typedef struct {
 } ngx_http_response_codes_conf_t;
 
 
+static ngx_int_t ngx_response_codes_module_init(ngx_cycle_t *cycle);
 static ngx_int_t ngx_http_response_codes_filter_init (ngx_conf_t*);
 static ngx_int_t ngx_http_response_codes_header_filter(ngx_http_request_t*);
 static char * ngx_http_response_codes_init_main_conf(ngx_conf_t*, void*);
@@ -48,7 +49,7 @@ ngx_module_t ngx_http_response_codes_filter_module = {
   ngx_http_response_codes_filter_module_commands,    /* module directives */
   NGX_HTTP_MODULE,                                   /* module type */
   NULL,                                              /* init master */
-  NULL,                                              /* init module */
+  ngx_response_codes_module_init,                    /* init module */
   NULL,                                              /* init process */
   NULL,                                              /* init thread */
   NULL,                                              /* exit thread */
@@ -56,6 +57,13 @@ ngx_module_t ngx_http_response_codes_filter_module = {
   NULL,                                              /* exit master */
   NGX_MODULE_V1_PADDING
 };
+
+
+static ngx_int_t
+ngx_response_codes_module_init(ngx_cycle_t *cycle)
+{
+  return NGX_OK;
+}
 
 
 static ngx_int_t
